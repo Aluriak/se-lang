@@ -1,7 +1,7 @@
 % Description of systems at https://planetplanet.net/2018/03/21/asimov-kalgash-take2/
 
 % Common to all
-root(black_hole,"Kalgash","Kalgash").
+root(black_hole,"Kalgash").
 
 
 % Kalgash 2 system

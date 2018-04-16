@@ -52,3 +52,16 @@ but i had fun making the corresponding interpreters, and using them for some [us
 Currently, the JSON implementation support much more features.
 
 [JSON implementation](json_model.py). [ASP implementation](asp_model.py).
+
+
+
+## dev
+- [x] ASP input
+- [x] JSON input
+- [x] reproduce Kalgash systems from [planetplanet.net](https://planetplanet.net/2018/03/21/asimov-kalgash-take2/)
+- [x] reproduce [UESS](https://lucas.bourneuf.net/blog/uess.html)
+- [ ] find a way to simplify UESS encoding (probably something to repeat orbit with gaps).
+- [ ] allow use of non-standard name for objects. Something like `planet(class,radius,mass)` or `star(spectral_class,radius,mass)`.
+- [ ] injection of arbitrary SpaceEngine script code.
+- [ ] full orbit definition. Probably the distance argument could be replaced by a `(distance,eccentricity,…)`.
+- [ ] testing suite

@@ -1,6 +1,13 @@
 SEDIR=~/games/space_engine/SpaceEngine/
+INFILE=
 
 asp:
-	python spaceengine.py data/kalgash.lp -o $(SEDIR) --overwrite
+	$(MAKE) _run INFILE=kalgash.lp
 json:
-	python spaceengine.py data/kalgash.json -o $(SEDIR) --overwrite
+	$(MAKE) _run INFILE=kalgash.json
+customs:
+	$(MAKE) _run INFILE=customs.lp
+
+
+_run:
+	python spaceengine.py data/$(INFILE) -o $(SEDIR) --overwrite

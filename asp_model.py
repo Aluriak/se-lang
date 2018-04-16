@@ -10,13 +10,20 @@ def data(fname:str) -> [dict]:
 
 
 def root_info(asp_model) -> (str or tuple, str, str, ...):
-    roots = tuple(args for args in asp_model.get('root', ()) if len(args) == 3)
+    roots = tuple(args for args in asp_model.get('root', ()) if len(args) >= 2)
     if len(roots) > 1:
         print('Multiple roots. Bad.')
         exit(1)
     elif len(roots) == 1:
-        args = roots[0]
-        root, name, uid = map(lambda x: (str(x).strip('"') if isinstance(x, str) else x), args)
+        format_ = lambda x: (str(x).strip('"') if isinstance(x, str) else x)
+        args = tuple(map(format_, roots[0]))
+        if len(args) == 2:
+            root, name = args
+            uid = name
+        elif len(args) == 3:
+            root, name, uid = args
+        else:
+            raise ValueError("Expect a root/2 or root/3 atom.")
     else:
         print('No root. Bad.')
         exit(1)  # TODO: determine the root by yourself
