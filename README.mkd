@@ -1,0 +1,54 @@
+# Space Engine modding language abstraction
+Using either [JSON](https://en.wikipedia.org/wiki/JSON) or [ASP](https://en.wikipedia.org/wiki/Answer_set_programming),
+define complete systems in SpaceEngine.
+
+For motivations, see [my blog entry about this repository](lucas.bourneuf.net/blog/se-lang.html).
+
+
+## Example
+Let's say you want to reproduce a simple solar system with a sun, an earth and a moon.
+
+In ASP, you would write:
+
+```asp
+root(sun,"My Simple System","MSS").
+orbit(sun,orbit(earth,moon,"0.01"),1).
+```
+
+In JSON, you would write:
+
+```json
+{
+    "name": "My Simple System",
+    "UID": "MSS",
+    "type": "sun",
+    "child": {
+        "type": "earth",
+        "distance": 1,
+        "child": {
+            "type": "moon",
+            "distance": 0.01
+        }
+    }
+}
+```
+
+
+## Interest of se-lang over the modding language
+The modding language of SpaceEngine is very well documented and powerful. However, beyond the simple cases described in the doc,
+you end up writing python scripts [to automatize some standard things, like rings](lucas.bourneuf.net/blog/uess.html).
+
+Instead of rewriting new python scripts each time, here it is: an internal model to rule them all. An internal model to be created by any format.
+An internal model to use for any case.
+
+
+## ASP vs JSON
+ASP is (logical) programming language, JSON is a text format, so they differ in so many ways,
+you can assume they are different things.
+
+The ideal language to abstract modding of SpaceEngine is probably not one of these two,
+but i had fun making the corresponding interpreters, and using them for some [use cases](lucas.bourneuf.net/blog/se-lang.html).
+
+Currently, the JSON implementation support much more features.
+
+[JSON implementation](json_model.py). [ASP implementation](asp_model.py).

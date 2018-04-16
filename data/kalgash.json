@@ -1,0 +1,77 @@
+[{
+    "name": "Kalgash 2",
+    "UID": "Kalgash",
+    "type": "black hole",
+    "childs": [
+        {
+                "type": "red dwarf",
+                "distance": 10,
+                "child": {
+                    "type": "earth",
+                    "distance": 0.2
+                }
+        },
+        {
+                "type": ["ring", 8, "sun"],
+                "distance": 20
+        }
+    ]
+}, {
+    "name": "Kalgash 3",
+    "UID": "Kalgash",
+    "type": "black hole",
+    "childs": {
+            "type": ["ring", 12, "sun"],
+            "distance": 20,
+            "childof": {
+                "1": {
+                    "type": "earth",
+                    "distance": 1
+                }
+            }
+        }
+}, {
+    "name": "Kalgash 4",
+    "UID": "Kalgash",
+    "type": "black hole",
+    "childs": [
+        {
+            "type": ["ring", 8, "sun"],
+            "retrograde": true,
+            "distance": 1
+        },
+        {
+            "type": "earth",
+            "distance": 2.5
+        },
+        {
+            "type": ["ring", 8, "sun"],
+            "distance": 5
+        }
+    ]
+}, {
+    "name": "Kalgash 5",
+    "UID": "Kalgash",
+    "type": "black hole",
+    "childs": [
+        {
+            "type": ["ring", 8, "sun"],
+            "retrograde": true,
+            "distance": 1,
+            "childof": {
+                "1": {
+                    "type": "earth",
+                    "distance": 0.2
+                }
+            }
+        },
+        {
+            "type": "earth",
+            "distance": 2.5
+        },
+        {
+            "type": ["ring", 8, "blue_giant"],
+            "distance": 20
+        }
+    ]
+}]
