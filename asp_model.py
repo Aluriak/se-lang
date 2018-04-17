@@ -50,7 +50,7 @@ def gen_orbits(args:tuple, objects:dict, types:dict, names:dict) -> [Orbit]:
 
         # Compute orbit parameters
         if isinstance(orbit_params, (str, int)):
-            orbit_params_map['semimajoraxis'] = asp_value_to_pyvalue(orbit_params)
+            orbit_params_map = {'semimajoraxis': asp_value_to_pyvalue(orbit_params)}
         elif not isinstance(orbit_params, tuple) or len(orbit_params) != 2:
             raise ValueError("Unexpected orbit parameters: {}".format(orbit_params))
         else:  # it's a tuple !
@@ -84,9 +84,9 @@ def gen_orbits(args:tuple, objects:dict, types:dict, names:dict) -> [Orbit]:
             subargs = child[1]
             assert len(subargs) >= 3
             # link between parent and direct child
-            yield from gen_orbits((parent, subargs[0], distance), types, names)
+            yield from gen_orbits((parent, subargs[0], distance), objects, types, names)
             # subsequent links
-            yield from gen_orbits(subargs, types, names)
+            yield from gen_orbits(subargs, objects, types, names)
         elif isinstance(child, tuple) and child[0] == 'ring':
             ring_params = child[1]
             if 'angle' in orbit_params_map:
@@ -107,7 +107,7 @@ def gen_orbits(args:tuple, objects:dict, types:dict, names:dict) -> [Orbit]:
                     index = subargs[0]
                     if (index-1) in range(len(ring_orbits)):
                         parent = ring_orbits[index].orbiter_uid
-                        yield from gen_orbits((parent, *subargs[1:]), types, names)
+                        yield from gen_orbits((parent, *subargs[1:]), objects, types, names)
             yield from ring_orbits
         elif isinstance(child, str):
             yield Orbit(names.get(parent, parent), child_type, child,
