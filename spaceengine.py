@@ -27,14 +27,15 @@ def get_models(fname:str or iter) -> [Model]:
 def model_from(asp_model, extract) -> Model:
     """Extract Model from ASP answer sets"""
     orbits = list()
+    objects = {}
 
-    root, NAME, UID, *other_data = extract.root_info(asp_model)
+    root, NAME, UID, *other_data = extract.root_info(asp_model, objects)
     root_uid = UID + '__' + NAME
     system_name = root_uid + ' system'
 
-    extract.populate_orbits(asp_model, orbits, root_uid, *other_data)  # side effect
+    extract.populate_orbits(asp_model, orbits, objects, root_uid, *other_data)  # side effect
 
-    return Model(str(system_name), root, root_uid, tuple(orbits))
+    return Model(str(system_name), root, root_uid, tuple(orbits), objects)
 
 
 def system_to_se(system_name:str) -> [str]:
@@ -43,17 +44,26 @@ def system_to_se(system_name:str) -> [str]:
     yield '{}'
 
 
-def root_to_se(body:tuple or str, name:str, parent:str, content:[str]=()) -> [str]:
+def root_to_se(body:tuple or str, name:str, parent:str, objects:dict, content:[str]=()) -> [str]:
     """Return the Space Engine version of given object"""
     if isinstance(body, str):
-        yield from name_to_se(body, parent, name, content)
+        yield from name_to_se(body, parent, name, content, custom_objects=objects)
     else:
         raise NotImplementedError
 
 
-def name_to_se(name:str, parent:str, uid:str, content:[str]) -> [str]:
+def name_to_se(name:str, parent:str, uid:str, content:[str], custom_objects:dict) -> [str]:
     if not isinstance(name, str):
         raise TypeError("Can't handle given value of type {} as name: {}".format(type(name), name))
+    if name in custom_objects:
+        data = custom_objects[name]
+        se_func = se_planet if data['type'] == 'planet' else se_star
+        data = {
+            k: (v.strip('"') if isinstance(v, str) else v)
+            for k, v in data.items() if k != 'type'
+        }
+        yield from se_func(parent=parent, name=uid, content=content, **data)
+        return  # nothing more to do
     name = name.replace(' ', '_').lower()
     name = name.lower().replace(' ', '_')
     if name == 'sun':
@@ -78,7 +88,7 @@ def gen_lines(model:Model) -> ([str], [str]):
     star_lines = system_to_se(model.system_name)
 
     # system root
-    planet_lines = root_to_se(model.root, name=model.root_uid, parent=model.system_name)
+    planet_lines = root_to_se(model.root, name=model.root_uid, parent=model.system_name, objects=model.objects)
 
     # show orbits
     # print('MODEL:', model.root)
@@ -90,7 +100,7 @@ def gen_lines(model:Model) -> ([str], [str]):
         orbit_params = se_orbit(semimajoraxis, eccentricity, inclination, angle, isretrograde)
         parent = (model.root_uid + '__' + parent) if parent != model.root_uid else parent
         orbiter_uid = (model.root_uid + '__' + orbiter_uid) if orbiter_uid != model.root_uid else orbiter_uid
-        planet = name_to_se(orbiter, parent=parent, uid=orbiter_uid, content=orbit_params)
+        planet = name_to_se(orbiter, parent=parent, uid=orbiter_uid, content=orbit_params, custom_objects=model.objects)
         planet_lines = itertools.chain(planet_lines, planet)
 
     return star_lines, planet_lines
