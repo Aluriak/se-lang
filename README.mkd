@@ -67,3 +67,4 @@ Currently, the JSON implementation support much more features.
 - [x] full orbit definition. Probably the distance argument could be replaced by a `(distance,eccentricity,…)`.
     - [ ] do the same for JSON
 - [ ] testing suite
+- [ ] lisp input (instead of JSON and ASP)
