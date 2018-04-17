@@ -62,6 +62,8 @@ Currently, the JSON implementation support much more features.
 - [x] reproduce [UESS](https://lucas.bourneuf.net/blog/uess.html)
 - [ ] find a way to simplify UESS encoding (probably something to repeat orbit with gaps).
 - [x] allow use of non-standard name for objects. Something like `planet(class,radius,mass)` or `star(spectral_class,radius,mass)`.
+    - [ ] do the same for JSON
 - [ ] injection of arbitrary SpaceEngine script code.
 - [x] full orbit definition. Probably the distance argument could be replaced by a `(distance,eccentricity,…)`.
+    - [ ] do the same for JSON
 - [ ] testing suite
