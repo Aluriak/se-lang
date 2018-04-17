@@ -29,7 +29,7 @@ def se_planet(parent:str, name:str, cls:str=None, earth_masses:float=None, earth
     if earth_masses:
         yield '    Mass           {}'.format(earth_masses)
     if earth_radius:
-        yield '    Radius         {}'.format(float(earth_radius) * 6378)
+        yield '    Radius         {}'.format(round(float(earth_radius) * 6378, 2))
     if not procgen:
         yield '    NoPlanets  true'
     if content:
