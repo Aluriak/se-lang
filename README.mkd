@@ -61,7 +61,7 @@ Currently, the JSON implementation support much more features.
 - [x] reproduce Kalgash systems from [planetplanet.net](https://planetplanet.net/2018/03/21/asimov-kalgash-take2/)
 - [x] reproduce [UESS](https://lucas.bourneuf.net/blog/uess.html)
 - [ ] find a way to simplify UESS encoding (probably something to repeat orbit with gaps).
-- [ ] allow use of non-standard name for objects. Something like `planet(class,radius,mass)` or `star(spectral_class,radius,mass)`.
+- [x] allow use of non-standard name for objects. Something like `planet(class,radius,mass)` or `star(spectral_class,radius,mass)`.
 - [ ] injection of arbitrary SpaceEngine script code.
 - [ ] full orbit definition. Probably the distance argument could be replaced by a `(distance,eccentricity,…)`.
 - [ ] testing suite
