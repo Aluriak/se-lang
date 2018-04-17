@@ -57,13 +57,13 @@ def name_to_se(name:str, parent:str, uid:str, content:[str]) -> [str]:
     name = name.replace(' ', '_').lower()
     name = name.lower().replace(' ', '_')
     if name == 'sun':
-        yield from se_star(parent=parent, name=uid, content=content)
+        yield from se_star(parent=parent, name=uid, content=content, solar_masses=1, solar_radius=1, spectral_class='G2V')
     elif name == 'red_dwarf':
         yield from se_star(parent=parent, name=uid, content=content, solar_masses=0.1, spectral_class='M5V')
     elif name == 'blue_giant':
         yield from se_star(parent=parent, name=uid, content=content, solar_masses=10, spectral_class='O9')
     elif name == 'earth':
-        yield from se_planet(parent=parent, name=uid, content=content)
+        yield from se_planet(parent=parent, name=uid, content=content, cls='terra', earth_masses=1, earth_radius=1)
     elif name == 'moon':
         yield from se_planet(parent=parent, name=uid, content=content, cls='luna', earth_masses=0.1)
     elif name == 'black_hole':

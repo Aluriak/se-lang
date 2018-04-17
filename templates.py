@@ -1,34 +1,37 @@
 
 
-SE_STAR = """
-Star    "{name}"
-{{
-    ParentBody "{parent}"
-    Class      "{spectral_class}"
-    MassSol    {solar_masses}
-    RadSol    {solar_radius}
-    NoPlanets  {no_procgen}
-    AccretionDisk no
-""".strip()
-
-SE_PLANET = """
-Planet    "{name}"
-{{
-    ParentBody     "{parent}"
-    Class          "{cls}"
-    Mass           {earth_masses}
-    NoPlanets      {no_procgen}
-""".strip()
 
 
-def se_star(parent:str, name:str, spectral_class:str='G2V', solar_masses:float=1.0, solar_radius:float=1.0, procgen:bool=False, content:[str]=()) -> [str]:
-    yield SE_STAR.format(name=name, parent=parent, spectral_class=spectral_class, solar_masses=solar_masses, solar_radius=solar_radius, no_procgen=not procgen)
+def se_star(parent:str, name:str, spectral_class:str=None, solar_masses:float=None, solar_radius:float=None, procgen:bool=False, content:[str]=(), accretion_disk:bool=False) -> [str]:
+    yield 'Star    "{}"'.format(name)
+    yield '{'
+    yield '    ParentBody "{}"'.format(parent)
+    if spectral_class:
+        yield '    Class      "{}"'.format(spectral_class)
+    if solar_masses:
+        yield '    MassSol    {}'.format(solar_masses)
+    if solar_radius:
+        yield '    RadSol    {}'.format(solar_radius)
+    if not procgen:
+        yield '    NoPlanets  true'
+    if not accretion_disk:
+        yield '    AccretionDisk no'
     if content:
         yield from content
     yield '}'
 
-def se_planet(parent:str, name:str, cls:str='terra', earth_masses:float=1.0, procgen:bool=False, content:[str]=()) -> [str]:
-    yield SE_PLANET.format(name=name, parent=parent, cls=cls, earth_masses=earth_masses, no_procgen=not procgen)
+def se_planet(parent:str, name:str, cls:str=None, earth_masses:float=None, earth_radius:float=None, procgen:bool=False, content:[str]=()) -> [str]:
+    yield 'Planet    "{}"'.format(name)
+    yield '{'
+    yield '    ParentBody     "{}"'.format(parent)
+    if cls:
+        yield '    Class          "{}"'.format(cls)
+    if earth_masses:
+        yield '    Mass           {}'.format(earth_masses)
+    if earth_radius:
+        yield '    Radius         {}'.format(float(earth_radius) * 6378)
+    if not procgen:
+        yield '    NoPlanets  true'
     if content:
         yield from content
     yield '}'
