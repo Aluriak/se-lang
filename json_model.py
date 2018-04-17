@@ -15,21 +15,21 @@ def data(fname:str) -> [dict]:
             yield data
 
 
-def root_info(json_data:dict) -> (str or tuple, str, str):
+def root_info(json_data:dict, objects:dict) -> (str or tuple, str, str):
     return json_data['type'], json_data['name'], json_data.get('UID', json_data['name'])
 
 
-def populate_orbits(json_data:dict, orbits:list, root_uid:str):
+def populate_orbits(json_data:dict, orbits:list, objects:dict, root_uid:str):
     assert isinstance(json_data, dict), json_data
     if 'childs' in json_data or 'child' in json_data:
         iter_childs = json_data.get('childs', json_data.get('child'))
         if isinstance(iter_childs, dict): iter_childs = [iter_childs]
         for child in iter_childs:
-            new_orbits = list(gen_orbits(root_uid, child))
+            new_orbits = list(gen_orbits(root_uid, child, objects))
             for subchild in child.get('childs', ()):
-                new_orbits += gen_orbits(child['UID'], subchild)
+                new_orbits += gen_orbits(child['UID'], subchild, objects)
             if 'child' in child:
-                new_orbits += gen_orbits(child['UID'], child['child'])
+                new_orbits += gen_orbits(child['UID'], child['child'], objects)
             # handle childs of specific stars of rings
             if 'childof' in child and isinstance(child['childof'], dict):
                 for parent_index, childs in child['childof'].items():
@@ -43,12 +43,12 @@ def populate_orbits(json_data:dict, orbits:list, root_uid:str):
                         raise ValueError("Parent index for childs of rings element must be a integer value, not '{}'".format(parent_index))
                     parent_uid = new_orbits[int(parent_index)].orbiter_uid
                     for subchild in childs:
-                        new_orbits += gen_orbits(parent_uid, subchild)
+                        new_orbits += gen_orbits(parent_uid, subchild, objects)
 
             orbits.extend(new_orbits)
 
 
-def gen_orbits(parent:str, child:dict) -> [Orbit]:
+def gen_orbits(parent:str, child:dict, objects:dict) -> [Orbit]:
     retrograde = child.get('retrograde', False)
     child_type = child.get('type')
     distance = child['distance']
