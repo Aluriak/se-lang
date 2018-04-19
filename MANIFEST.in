@@ -1,0 +1,4 @@
+include MANIFEST.in requirements.txt README.mkd
+exclude Makefile
+recursive-include selang *.py
+prune data
