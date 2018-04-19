@@ -1,7 +1,9 @@
 """Routines to build model from JSON data"""
 
 import json
-from commons import Model, Orbit, uid_gen
+from objects import Model, OrbitInfo
+from objects_builder import ref
+from commons import uid_gen
 
 
 def data(fname:str) -> [dict]:
@@ -16,7 +18,11 @@ def data(fname:str) -> [dict]:
 
 
 def root_info(json_data:dict, objects:dict) -> (str or tuple, str, str):
-    return json_data['type'], json_data['name'], json_data.get('UID', json_data['name'])
+    root_type, NAME, UID = json_data['type'], json_data['name'], json_data.get('UID', json_data['name'])
+    root_uid = UID + '__' + NAME
+    system_name = root_uid + ' system'
+    objects[root_uid] = ref(root_type)
+    return root_uid, system_name
 
 
 def populate_orbits(json_data:dict, orbits:list, objects:dict, root_uid:str):
@@ -41,14 +47,14 @@ def populate_orbits(json_data:dict, orbits:list, objects:dict, root_uid:str):
                         raise ValueError("Unhandlable json value for ring child: {}".format(childs))
                     if not parent_index.isnumeric():
                         raise ValueError("Parent index for childs of rings element must be a integer value, not '{}'".format(parent_index))
-                    parent_uid = new_orbits[int(parent_index)].orbiter_uid
+                    parent_uid = new_orbits[int(parent_index)][1]
                     for subchild in childs:
                         new_orbits += gen_orbits(parent_uid, subchild, objects)
 
             orbits.extend(new_orbits)
 
 
-def gen_orbits(parent:str, child:dict, objects:dict) -> [Orbit]:
+def gen_orbits(parent:str, child:dict, objects:dict) -> [OrbitInfo]:
     retrograde = child.get('retrograde', False)
     child_type = child.get('type')
     distance = child['distance']
@@ -61,8 +67,10 @@ def gen_orbits(parent:str, child:dict, objects:dict) -> [Orbit]:
             angle = idx * angle_step
             new_uid = ring_type + str(uid_gen())
             child['UID'] = new_uid
-            yield Orbit(parent, ring_type, new_uid, distance, angle=angle, isretrograde=retrograde)
+            objects[new_uid] = ref(ring_type)
+            yield parent, new_uid, OrbitInfo(distance, angle=angle, retrograde=retrograde)
     elif isinstance(child_type, str):
         new_uid = child_type + str(uid_gen())
         child['UID'] = new_uid
-        yield Orbit(parent, child_type, new_uid, distance, isretrograde=retrograde)
+        objects[new_uid] = ref(child_type)
+        yield parent, new_uid, OrbitInfo(distance, retrograde=retrograde)

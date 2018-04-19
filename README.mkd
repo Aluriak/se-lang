@@ -1,36 +1,66 @@
 # Space Engine modding language abstraction
-Using either [JSON](https://en.wikipedia.org/wiki/JSON) or [ASP](https://en.wikipedia.org/wiki/Answer_set_programming),
-define complete systems in SpaceEngine.
+Using python, define complete systems in SpaceEngine.
 
 For motivations, see [my blog entry about this repository](lucas.bourneuf.net/blog/se-lang.html).
 
 
-## Example
+## Install
+
+    pip install selang
+
+On random error, add `no-cache-dir`.
+To get the ASP part working, install [clingo 5](https://github.com/potassco/clingo/releases) in you $PATH.
+
+
+
+## CLI Example
+
+There is some help:
+
+    python -m selang --help
+
+
+
+## API Example
 Let's say you want to reproduce a simple solar system with a sun, an earth and a moon.
 
-In ASP, you would write:
+Using python and se-lang, you would write:
 
-```asp
-root(sun,"My Simple System","MSS").
-orbit(sun,orbit(earth,moon,"0.01"),1).
+```python
+from selang import ref, orbit, Model, model_to_se
+
+model = Model(
+    'My little system',
+    {  # structure of the system
+        'sun': (1, orbit(1, eccentricity=0.04)),
+        1: ('moon', orbit(0.05)),
+    },
+    {  # non explicit objects
+        1: ref('earth', earth_mass=1.2),  # super earth
+    }
+)
+
+model_to_se(model, '~/games/space_engine/SpaceEngine/')
 ```
 
-In JSON, you would write:
+### Alternative typing
+The internal model used by se-lang is quite simple, and therefore may be used directly:
 
-```json
-{
-    "name": "My Simple System",
-    "UID": "MSS",
-    "type": "sun",
-    "child": {
-        "type": "earth",
-        "distance": 1,
-        "child": {
-            "type": "moon",
-            "distance": 0.01
-        }
+```python
+from selang import ref, orbit, Model, model_to_se
+
+model = Model(
+    'My little system',
+    (
+        ('sun', 1, orbit(1, eccentricity=0.04)),
+        (1, 'moon', orbit(0.05))
+    ),
+    {
+        1: ref('earth', earth_mass=1.2),  # super earth
     }
-}
+)
+
+model_to_se(model, '~/games/space_engine/SpaceEngine/')
 ```
 
 
@@ -42,29 +72,93 @@ Instead of rewriting new python scripts each time, here it is: an internal model
 An internal model to use for any case.
 
 
-## ASP vs JSON
+## Input formats
+The internal model can be directly built by client code.
+However, to simplify the input, further work will focus on building the internal model using
+other languages.
+
+### ASP (non-implemented)
+ASP is (logical) programming language, like prolog.
+It allows the high-level expression of logical relations, which is quite interesting for DSLs.
+
+Previous implementation handled ASP as the primary way to do the job. It was simple, as show the following 4 Kalgash systems:
+
+```asp
+% Common to all
+root(black_hole,"Kalgash").
+
+
+% Kalgash 2 system
+orbit(black_hole,ring(sun,8),20).
+orbit(black_hole,orbit(red_dwarf,earth,"0.2"),10).
+
+
+% Kalgash 3 system
+orbit(black_hole,ring(sun,12,orbit(1,earth,1)),20).
+
+
+% Kalgash 4 system
+orbit(black_hole,ring(sun,8),1,retrograde).
+orbit(black_hole,earth,"2.5").
+orbit(black_hole,ring(sun,8),"4").
+
+
+% Kalgash 5 system
+orbit(black_hole,ring(sun,8),1,retrograde).
+orbit(black_hole,earth,"2.5").
+orbit(black_hole,ring(blue_giant,8),20).
+```
+See other examples in [data/](data/).
+
+
+### JSON
+JSON is really close to Python basic types, and as such enables
+a quasi-obvious mapping to the python API.
+
+As for ASP, previous implementation handled JSON-based input. It was verbose, but simple:
+```json
+{
+    "name": "Kalgash 3",
+    "UID": "Kalgash",
+    "type": "black hole",
+    "childs": {
+            "type": ["ring", 12, "sun"],
+            "distance": 20,
+            "childof": {
+                "1": {
+                    "type": "earth",
+                    "distance": 1
+                }
+            }
+        }
+}
+```
+
+See other examples in [data/](data/).
+
+#### ASP vs JSON
 ASP is (logical) programming language, JSON is a text format, so they differ in so many ways,
 you can assume they are different things.
 
 The ideal language to abstract modding of SpaceEngine is probably not one of these two,
 but i had fun making the corresponding interpreters, and using them for some [use cases](lucas.bourneuf.net/blog/se-lang.html).
 
-Currently, the JSON implementation support much more features.
-
-[JSON implementation](json_model.py). [ASP implementation](asp_model.py).
-
 
 
 ## dev
-- [x] ASP input
-- [x] JSON input
-- [x] reproduce Kalgash systems from [planetplanet.net](https://planetplanet.net/2018/03/21/asimov-kalgash-take2/)
-- [x] reproduce [UESS](https://lucas.bourneuf.net/blog/uess.html)
-- [ ] find a way to simplify UESS encoding (probably something to repeat orbit with gaps).
-- [x] allow use of non-standard name for objects. Something like `planet(class,radius,mass)` or `star(spectral_class,radius,mass)`.
-    - [ ] do the same for JSON
+- [ ] ASP input: not really useful alone.
+- [x] JSON input: not really programmable, but useful for simple work.
+- [x] Python input: good enough
+- [ ] lisp input.
+- [ ] read input from file
+- [ ] reproduce Kalgash systems from [planetplanet.net](https://planetplanet.net/2018/03/21/asimov-kalgash-take2/): [see blog entry](https://lucas.bourneuf.net/blog/se-lang.html)
+- [ ] reproduce [UESS](https://lucas.bourneuf.net/blog/uess.html)
+- [x] find a way to simplify UESS encoding: python do the job.
+- [x] user-made spacing for rings
+- [x] specific treatment for elements of rings
+- [x] allow use of standard name for objects: `sun`, `earth`,…
+- [x] allow use of non-standard name for objects: `planet` and `star` functions.
 - [ ] injection of arbitrary SpaceEngine script code.
-- [x] full orbit definition. Probably the distance argument could be replaced by a `(distance,eccentricity,…)`.
-    - [ ] do the same for JSON
+- [x] full orbit definition
 - [ ] testing suite
-- [ ] lisp input (instead of JSON and ASP)
+- [ ] handle star barycenter as object

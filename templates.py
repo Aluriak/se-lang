@@ -1,7 +1,5 @@
 
 
-
-
 def se_star(parent:str, name:str, spectral_class:str=None, solar_masses:float=None, solar_radius:float=None, procgen:bool=False, content:[str]=(), accretion_disk:bool=False) -> [str]:
     yield 'Star    "{}"'.format(name)
     yield '{'
@@ -51,7 +49,7 @@ SE_ORBIT = """
 """.strip('\n')
 
 
-def se_orbit(semimajoraxis:float, eccentricity:float=0, inclination:float=0, angle:float=0, retrograde:bool=False, obliquity:float=0) -> [str]:
+def se_orbit(semimajoraxis:float, eccentricity:float=0, obliquity:float=0, inclination:float=0, angle:float=0, retrograde:bool=False) -> [str]:
     yield SE_ORBIT.format(semimajoraxis=semimajoraxis, eccentricity=eccentricity,
                           inclination=inclination + (180 if retrograde else 0),
                           angle=angle, obliquity=obliquity)

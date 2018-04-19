@@ -65,7 +65,6 @@ def name_to_se(name:str, parent:str, uid:str, content:[str], custom_objects:dict
         yield from se_func(parent=parent, name=uid, content=content, **data)
         return  # nothing more to do
     name = name.replace(' ', '_').lower()
-    name = name.lower().replace(' ', '_')
     if name == 'sun':
         yield from se_star(parent=parent, name=uid, content=content, solar_masses=1, solar_radius=1, spectral_class='G2V')
     elif name == 'red_dwarf':
