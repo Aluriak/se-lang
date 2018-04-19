@@ -7,6 +7,8 @@ json:
 	$(MAKE) _run INFILE=kalgash.json
 customs:
 	$(MAKE) _run INFILE=customs.lp
+ss:
+	$(MAKE) _run INFILE=simple-system.lp
 
 
 _run:
