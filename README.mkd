@@ -77,11 +77,11 @@ The internal model can be directly built by client code.
 However, to simplify the input, further work will focus on building the internal model using
 other languages.
 
-### ASP (non-implemented)
+### ASP
 ASP is (logical) programming language, like prolog.
 It allows the high-level expression of logical relations, which is quite interesting for DSLs.
 
-Previous implementation handled ASP as the primary way to do the job. It was simple, as show the following 4 Kalgash systems:
+It leads to very short programs, as show the following reproduction of all 4 Kalgash systems:
 
 ```asp
 % Common to all
@@ -135,6 +135,7 @@ As for ASP, previous implementation handled JSON-based input. It was verbose, bu
 ```
 
 See other examples in [data/](data/).
+
 
 #### ASP vs JSON
 ASP is (logical) programming language, JSON is a text format, so they differ in so many ways,
