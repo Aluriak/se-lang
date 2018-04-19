@@ -1,9 +1,9 @@
 """Routines to build model from JSON data"""
 
 import json
-from objects import Model, OrbitInfo
-from objects_builder import ref
-from commons import uid_gen
+from .objects import Model, Orbit
+from .objects_builder import ref
+from .commons import uid_gen
 
 
 def data(fname:str) -> [dict]:
@@ -17,7 +17,13 @@ def data(fname:str) -> [dict]:
             yield data
 
 
-def root_info(json_data:dict, objects:dict) -> (str or tuple, str, str):
+def root_info(json_data:dict, objects:dict) -> (str, str):
+    """Return the root uid and the system name.
+
+    json_data -- json dict containing data
+    objects -- dict. Modified, so root_uid maps to the root definition.
+
+    """
     root_type, NAME, UID = json_data['type'], json_data['name'], json_data.get('UID', json_data['name'])
     root_uid = UID + '__' + NAME
     system_name = root_uid + ' system'
@@ -54,7 +60,7 @@ def populate_orbits(json_data:dict, orbits:list, objects:dict, root_uid:str):
             orbits.extend(new_orbits)
 
 
-def gen_orbits(parent:str, child:dict, objects:dict) -> [OrbitInfo]:
+def gen_orbits(parent:str, child:dict, objects:dict) -> [Orbit]:
     retrograde = child.get('retrograde', False)
     child_type = child.get('type')
     distance = child['distance']
@@ -68,9 +74,9 @@ def gen_orbits(parent:str, child:dict, objects:dict) -> [OrbitInfo]:
             new_uid = ring_type + str(uid_gen())
             child['UID'] = new_uid
             objects[new_uid] = ref(ring_type)
-            yield parent, new_uid, OrbitInfo(distance, angle=angle, retrograde=retrograde)
+            yield parent, new_uid, Orbit(distance, angle=angle, retrograde=retrograde)
     elif isinstance(child_type, str):
         new_uid = child_type + str(uid_gen())
         child['UID'] = new_uid
         objects[new_uid] = ref(child_type)
-        yield parent, new_uid, OrbitInfo(distance, retrograde=retrograde)
+        yield parent, new_uid, Orbit(distance, retrograde=retrograde)

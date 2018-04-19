@@ -10,4 +10,4 @@ customs:
 
 
 _run:
-	python spaceengine.py data/$(INFILE) -o $(SEDIR) --overwrite
+	python -m selang data/$(INFILE) -o $(SEDIR) --overwrite

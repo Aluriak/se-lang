@@ -146,13 +146,13 @@ but i had fun making the corresponding interpreters, and using them for some [us
 
 
 ## dev
-- [ ] ASP input: not really useful alone.
-- [x] JSON input: not really programmable, but useful for simple work.
+- [x] ASP input: short and simple.
+- [x] JSON input: not programmable, but useful for simple work.
 - [x] Python input: good enough
 - [ ] lisp input.
-- [ ] read input from file
-- [ ] reproduce Kalgash systems from [planetplanet.net](https://planetplanet.net/2018/03/21/asimov-kalgash-take2/): [see blog entry](https://lucas.bourneuf.net/blog/se-lang.html)
-- [ ] reproduce [UESS](https://lucas.bourneuf.net/blog/uess.html)
+- [x] read input from file
+- [x] reproduce Kalgash systems from [planetplanet.net](https://planetplanet.net/2018/03/21/asimov-kalgash-take2/): [see blog entry](https://lucas.bourneuf.net/blog/se-lang.html)
+- [x] reproduce [UESS](https://lucas.bourneuf.net/blog/uess.html)
 - [x] find a way to simplify UESS encoding: python do the job.
 - [x] user-made spacing for rings
 - [x] specific treatment for elements of rings

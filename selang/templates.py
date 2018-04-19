@@ -1,4 +1,6 @@
+"""Functions bridging internal data and SpaceEngine representation.
 
+"""
 
 def se_star(parent:str, name:str, spectral_class:str=None, solar_masses:float=None, solar_radius:float=None, procgen:bool=False, content:[str]=(), accretion_disk:bool=False) -> [str]:
     yield 'Star    "{}"'.format(name)

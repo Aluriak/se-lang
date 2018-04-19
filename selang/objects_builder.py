@@ -2,10 +2,10 @@
 
 import inspect
 from itertools import islice, cycle
-from objects import Planet, Orbit, OrbitInfo, Ring, Star, OBJECTS
+from .objects import Planet, Orbit, Ring, Star, OBJECTS
 
 
-orbit = OrbitInfo
+orbit = Orbit
 def ring(nb_body:int=None, body:object=None, *, angle_steps:float or iter=None) -> Ring:
     """Define a ring object.
 
