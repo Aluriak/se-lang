@@ -1,7 +1,7 @@
-root(1,"CustomDemoSystem").
+root(root,"CustomDemoSystem").
 
-is(1,star("X",200)).  % a black hole of 200 solar masses
+is(root,star("X",200)).  % a black hole of 200 solar masses
 
-% A custom terra and custom star orbit the black hole with high eccentricity
-orbit(1,planet(terra,"0.6"),params(1,"0.9")).
-orbit(1,star("M5V","0.6"),params(2,"0.7"),retrograde).
+% A custom terra with moon and a custom star orbit the black hole with high eccentricity
+orbit(root,orbit(planet(terra,"0.6"),moon,"0.002"),params(1,"0.9")).
+orbit(root,star("M5V","0.8"),params(2,"0.7"),retrograde).
