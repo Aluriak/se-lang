@@ -11,3 +11,6 @@ customs:
 
 _run:
 	python -m selang data/$(INFILE) -o $(SEDIR) --overwrite
+
+release:
+	fullrelease
