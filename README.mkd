@@ -192,6 +192,7 @@ but i had fun making the corresponding interpreters, and using them for some [us
 - [x] specific treatment for elements of rings
 - [x] allow use of standard name for objects: `sun`, `earth`,…
 - [x] allow use of non-standard name for objects: `planet` and `star` functions.
+- [ ] import and execution of `.py` files
 - [ ] injection of arbitrary SpaceEngine script code.
 - [x] full orbit definition
 - [ ] testing suite
