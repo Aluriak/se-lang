@@ -1,4 +1,4 @@
-
+"""A complex example, showcase for many features"""
 
 from selang import compile_to_se, compile_to_gen, ref, planet, star, orbit, ring
 
@@ -22,11 +22,4 @@ objects = {
 
 one, two = compile_to_se('custom system', orbits, objects,
                          '~/games/space_engine/SpaceEngine/', overwrite=True)
-
-
-if isinstance(one, str):
-    print(one, two)
-else:
-    print('\n'.join(one))
-    print('##################################################')
-    print('\n'.join(two))
+print('FILES:', one, two)
