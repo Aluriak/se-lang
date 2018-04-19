@@ -23,11 +23,14 @@ def compile_to_se(system_name:str, orbits:dict or tuple, objects:dict,
     if isinstance(se_addons_dir, str):
         star_file = se_addons_dir, 'addons/catalogs/stars/'
         planet_file = se_addons_dir, 'addons/catalogs/planets/'
+        star_fname = planet_fname = system_name + '.sc'
     else:
         assert len(se_addons_dir) == 2, se_addons_dir
         star_file, planet_file = se_addons_dir
-    star_file = os.path.expanduser(os.path.join(*star_file, system_name + '.sc'))
-    planet_file = os.path.expanduser(os.path.join(*planet_file, system_name + '.sc'))
+        star_fname = system_name + '.star.sc'
+        planet_fname = system_name + '.planet.sc'
+    star_file = os.path.expanduser(os.path.join(*star_file, star_fname))
+    planet_file = os.path.expanduser(os.path.join(*planet_file, planet_fname))
 
     if not overwrite:
         if os.path.exists(star_file):
