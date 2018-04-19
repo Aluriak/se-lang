@@ -4,6 +4,22 @@ Using python, define complete systems in SpaceEngine.
 For motivations, see [my blog entry about this repository](lucas.bourneuf.net/blog/se-lang.html).
 
 
+## Short example
+Let's say you want to reproduce a simple solar system with a sun, an earth and a moon.
+You can write in `mysimplesystem.lp` the following lines:
+
+```asp
+root(sun,"MySimpleSystem").
+orbit(sun,orbit(earth,moon,"0.005"),1).
+```
+
+You now run selang on it:
+
+    python -m selang mysimplesystem.lp -o ~/path/to/SpaceEngine/install/dir
+
+You can now run SpaceEngine and press F3 to search and go to `MySimpleSystem`.
+
+
 ## Install
 
     pip install selang
@@ -14,8 +30,24 @@ To get the ASP part working, install [clingo 5](https://github.com/potassco/clin
 
 
 ## CLI Example
+First, lookup some example of input data in [data/](data/), for instance the reproduction in JSON
+of [the full 4 Kalgash systems](data/kalgash.json) from [planetplanet.net]().
 
-There is some help:
+Now, run the command:
+
+    python -m selang data/kalgash.json
+
+8 files will be created : two for each of the four Kalgash systems defined in `data/kalgash.json`.
+The two files correspond to the SpaceEngine modding interface, that needs a star record (which should be named system record) and a planet record (which should be named object record).
+Note that the star record, ending in `.star.sc`, is quite trivial.
+
+Also, if you have the path to your SpaceEngine installation directory, for instance `~/games/SpaceEngine/`:
+
+    python -m selang data/kalgash.json -o ~/games/SpaceEngine
+
+This way, selang will directly put the generated files into the expected directories, i.e. `<SpaceEngine installation directory>/addons/catalogs/{star,planet}/`.
+
+There is some help about this CLI if you need it:
 
     python -m selang --help
 
@@ -162,4 +194,17 @@ but i had fun making the corresponding interpreters, and using them for some [us
 - [ ] injection of arbitrary SpaceEngine script code.
 - [x] full orbit definition
 - [ ] testing suite
-- [ ] handle star barycenter as object
+- [ ] handle star barycenter as object (bottom line: necessary to handle binary objects)
+
+
+
+## FAQ
+
+### Dinopython support ?
+No.
+
+### Contributions ?
+Yes.
+
+### Other things i did for SpaceEngine ?
+[se-pioneer](https://github.com/Aluriak/se-pioneers), for asynchonous multiplayer.
