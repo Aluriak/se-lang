@@ -5,7 +5,7 @@ root(black_hole,"Kalgash").
 
 
 % Kalgash 2 system
-orbit(black_hole,ring(sun,8),20).
+orbit(black_hole,ring(8,sun),20).
 orbit(black_hole,orbit(red_dwarf,earth,"0.2"),10).
 
 
