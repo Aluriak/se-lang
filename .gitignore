@@ -1,4 +1,5 @@
 Session.vim
 __pycache__/
-venv/
+dist/
 selang.egg-info
+venv/
