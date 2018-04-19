@@ -31,7 +31,7 @@ To get the ASP part working, install [clingo 5](https://github.com/potassco/clin
 
 ## CLI Example
 First, lookup some example of input data in [data/](data/), for instance the reproduction in JSON
-of [the full 4 Kalgash systems](data/kalgash.json) from [planetplanet.net]().
+of [the full 4 Kalgash systems](data/kalgash.json) from [planetplanet.net](https://planetplanet.net/2018/03/21/asimov-kalgash-take2/).
 
 Now, run the command:
 
