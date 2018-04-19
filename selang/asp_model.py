@@ -41,7 +41,7 @@ def root_info(asp_model, objects:dict) -> (str, str, ...):
         if len(args) == 2:
             root_uid, system_name = args
         else:
-            raise ValueError("Expect a root/2 atom.")
+            raise ValueError("Expect a system/2 atom, not '{}'".format(args))
     else:
         print('No root. Bad.')
         exit(1)  # TODO: determine the root by yourself
