@@ -1,4 +1,4 @@
-root(root,"CustomDemoSystem").
+system(root,"CustomDemoSystem").
 
 is(root,star("X",200)).  % a black hole of 200 solar masses
 

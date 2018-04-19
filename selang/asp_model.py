@@ -31,7 +31,7 @@ def root_info(asp_model, objects:dict) -> (str, str, ...):
     objects -- dict. Modified, so root_uid maps to the root definition.
 
     """
-    roots = tuple(args for args in asp_model.get('root', ()) if len(args) >= 2)
+    roots = tuple(args for args in asp_model.get('system', ()) if len(args) >= 2)
     if len(roots) > 1:
         print('Multiple roots. Bad.')
         exit(1)

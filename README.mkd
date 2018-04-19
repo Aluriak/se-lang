@@ -9,7 +9,7 @@ Let's say you want to reproduce a simple solar system with a sun, an earth and a
 You can write in `mysimplesystem.lp` the following lines:
 
 ```asp
-root(sun,"MySimpleSystem").
+system(sun,"MySimpleSystem").
 orbit(sun,orbit(earth,moon,"0.005"),1).
 ```
 
@@ -117,7 +117,7 @@ It leads to very short programs, as show the following reproduction of all 4 Kal
 
 ```asp
 % Common to all
-root(black_hole,"Kalgash").
+system(black_hole,"Kalgash").
 
 
 % Kalgash 2 system
