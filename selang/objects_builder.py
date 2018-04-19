@@ -6,27 +6,27 @@ from .objects import Planet, Orbit, Ring, Star, OBJECTS
 
 
 orbit = Orbit
-def ring(nb_body:int=None, body:object=None, *, angle_steps:float or iter=None) -> Ring:
+def ring(nb_body:int=None, bodies:object=None, *, angle_steps:float or iter=None) -> Ring:
     """Define a ring object.
 
-    body -- either one object, or an iterable of objects
+    bodies -- either one object, or an iterable of objects
     nb_body -- number of body to put in the ring.
 
-    If body is an iterable and nb_body is given, the ring will contains
+    If bodies is an iterable and nb_body is given, the ring will contains
     the nb_body firsts items of the iterable.
 
     """
     # invert arguments if any mixing
-    if nb_body and not body and not isinstance(nb_body, int):
-        body, nb_body = nb_body, None
+    if nb_body and not bodies and not isinstance(nb_body, int):
+        bodies, nb_body = nb_body, None
     # compute bodies
-    if inspect.isgenerator(body) or isinstance(body, (list, tuple)):
+    if inspect.isgenerator(bodies) or isinstance(bodies, (list, tuple)):
         if nb_body is None:
-            bodies = tuple(body)
+            bodies = tuple(bodies)
         else:  # take the given number in given iterable
-            bodies = tuple(islice(cycle([body]), 0, int(nb_body)))
+            bodies = tuple(islice(cycle([bodies]), 0, int(nb_body)))
     else:
-        bodies = (body,) * int(nb_body)
+        bodies = (bodies,) * int(nb_body)
     nb_body = len(bodies)
     # compute angle steps
     if angle_steps is None:  # make them evenly distributed

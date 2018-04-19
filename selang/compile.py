@@ -55,10 +55,9 @@ def compile_to_gen(system_name:str, orbits:dict, objects:dict) -> ([str], [str])
     objects -- map from object uid to object definition
 
     """
-    uids = {useruid: uid_gen() for useruid in objects.keys()}  # user uid -> uid
     orbits = tuple(uniformized_orbits(orbits))
     # print('ORBITS:', orbits)
-    orbits, objects, old_uids = uidfy_data(orbits, objects, uids)
+    orbits, objects, old_uids, uids = uidfy_data(orbits, objects)
     # print('UIDFY:', orbits, objects, old_uids)
     name_of = lambda uid: system_name + '_' + str(type(objects[uid]).__name__).lower() + '_' + str(uid)
 
@@ -106,24 +105,25 @@ def make_inclusion_tree(orbits, uids) -> (set, dict):
     return roots, direct_inclusions
 
 
-def uidfy_data(orbits, objects, uids) -> (dict, dict, dict):
+def uidfy_data(orbits, objects) -> (dict, dict, dict, dict):
     """Return the same data, but with all user defined uid replaced by general uid,
     and all objects pushed into objects pool (no one-time-use objects).
 
     orbits -- orbit data
     objects -- map object uid -> object definition
-    uids -- map user uid -> uid
 
     Returns:
     orbits -- orbit data
     objects -- map object uid -> object definition
-    uids -- map uid -> old uid
+    old_to_new_uids -- map old uid -> new uid
+    user_to_new_uid -- map user uid -> new uid
 
 
     """
     new_orbits = []
     new_objects = {}
     old_to_new_uids = {}
+    uids = {useruid: uid_gen() for useruid in objects.keys()}  # user uid -> uid
 
     def make_uid(value):
         """Return an uid associated to given value. If value is not in uids map,
@@ -152,7 +152,8 @@ def uidfy_data(orbits, objects, uids) -> (dict, dict, dict):
     # print('ORBITS:')
     # pprint(orbits)
     for parent, child, orbit in orbits:
-        if isinstance(child, Ring):
+        if isinstance(child, Ring) or isinstance(objects.get(child), Ring):
+            child = objects.get(child, child)
             base_orbit = orbit._asdict()
             angle = orbit.angle
             for body, angle_step in zip(child.bodies, child.angle_steps):
@@ -163,7 +164,7 @@ def uidfy_data(orbits, objects, uids) -> (dict, dict, dict):
         else:
             new_orbits.append((make_uid(parent), make_uid(child), orbit))
 
-    return tuple(new_orbits), new_objects, old_to_new_uids
+    return tuple(new_orbits), new_objects, old_to_new_uids, uids
 
 
 def uniformized_orbits(orbits:dict or tuple) -> [tuple]:

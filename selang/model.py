@@ -7,7 +7,7 @@ from . import asp_model
 from . import json_model
 from . import commons
 from .objects import Model
-from .compile import compile_to_gen, compile_to_se
+from .compile import compile_to_gen, compile_to_se, uidfy_data
 from .objects_builder import planet, orbit, ring, star, ref
 
 
@@ -47,5 +47,15 @@ def model_from(asp_model, extract) -> Model:
     assert root_uid in objects
 
     extract.populate_orbits(asp_model, orbits, objects, root_uid, *other_data)  # side effect
+
+    # uniformize the model
+    orbits, objects, *_ = uidfy_data(orbits, objects)
+
+    # from pprint import pprint
+    # print()
+    # print('ORBITS:')
+    # pprint(orbits)
+    # print('OBJECTS:')
+    # pprint(objects)
 
     return Model(str(system_name), tuple(orbits), objects)

@@ -181,6 +181,7 @@ but i had fun making the corresponding interpreters, and using them for some [us
 ## dev
 - [x] ASP input: short and simple.
 - [x] JSON input: not programmable, but useful for simple work.
+- [ ] simplify a little JSON input as it was done for ASP (notably gestion of meta-objects delegated to post-processing compilation)
 - [x] Python input: good enough
 - [ ] lisp input.
 - [x] read input from file
