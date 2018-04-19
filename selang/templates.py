@@ -15,7 +15,7 @@ def se_star(parent:str, name:str, spectral_class:str=None, solar_masses:float=No
     if not procgen:
         yield '    NoPlanets  true'
     if not accretion_disk:
-        yield '    AccretionDisk no'
+        yield '    NoAccretionDisk true'
     if content:
         yield from content
     yield '}'
