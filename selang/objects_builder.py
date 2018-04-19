@@ -6,6 +6,8 @@ from .objects import Planet, Orbit, Ring, Star, OBJECTS
 
 
 orbit = Orbit
+
+
 def ring(nb_body:int=None, bodies:object=None, *, angle_steps:float or iter=None) -> Ring:
     """Define a ring object.
 
@@ -65,10 +67,6 @@ def _astre_mass_radius(mass:float=None, radius:float=None) -> (float, float):
     else:
         raise ValueError("Astre definition: radius or mass must be given (received: {}, {}).".format(mass, radius))
     return float(mass), float(radius)
-
-
-def structures_to_orbit() -> Orbit:
-    pass
 
 
 def ref(name:str, **kwargs) -> star or planet:

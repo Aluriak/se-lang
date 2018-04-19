@@ -11,7 +11,11 @@ def of_star_record(system_name:str) -> [str]:
 
 def of_root(root:object, name:str, system_name:str):
     """SpaceEngine script representation of the root."""
-    return root.se_repr(name, system_name)
+    try:
+        return root.se_repr(name, system_name)
+    except AttributeError as err:
+        print('ROOT:', root)
+        raise err
 
 def of_object(obj:object, name:str, parent:str, *, content:[str]=()):
     """SpaceEngine script representation of given star or planet."""

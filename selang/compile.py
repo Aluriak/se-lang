@@ -144,7 +144,10 @@ def uidfy_data(orbits, objects) -> (dict, dict, dict, dict):
         else:
             new_uid = uids[value]
             # print('USER DEFINED OBJECT:', value, objects[value], uids[value], new_uid)
-            new_objects[new_uid] = objects[value]
+            if isinstance(objects[value], str):
+                new_objects[value] = ref(objects[value])
+            else:
+                new_objects[new_uid] = objects[value]
             old_to_new_uids[value] = new_uid
 
         return new_uid
