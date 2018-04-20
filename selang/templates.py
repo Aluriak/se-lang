@@ -20,6 +20,18 @@ def se_star(parent:str, name:str, spectral_class:str=None, solar_masses:float=No
         yield from content
     yield '}'
 
+
+def se_barycenter(parent:str, name:str, procgen:bool=False, content:[str]=()) -> [str]:
+    yield 'StarBarycenter    "{}"'.format(name)
+    yield '{'
+    yield '    ParentBody     "{}"'.format(parent)
+    if not procgen:
+        yield '    NoPlanets true'
+    if content:
+        yield from content
+    yield '}'
+
+
 def se_planet(parent:str, name:str, cls:str=None, earth_masses:float=None, earth_radius:float=None, procgen:bool=False, content:[str]=()) -> [str]:
     yield 'Planet    "{}"'.format(name)
     yield '{'
@@ -37,21 +49,22 @@ def se_planet(parent:str, name:str, cls:str=None, earth_masses:float=None, earth
     yield '}'
 
 
-SE_ORBIT = """
-    Obliquity       {obliquity}
-    Orbit
-    {{
-        RefPlane        "Equator"
-        SemiMajorAxis   {semimajoraxis}
-        Eccentricity    {eccentricity}
-        Inclination     {inclination}
-        MeanAnomaly     {angle}
-        AscendingNode   0
-    }}
-""".strip('\n')
-
-
-def se_orbit(semimajoraxis:float, eccentricity:float=0, obliquity:float=0, inclination:float=0, angle:float=0, retrograde:bool=False) -> [str]:
-    yield SE_ORBIT.format(semimajoraxis=semimajoraxis, eccentricity=eccentricity,
-                          inclination=inclination + (180 if retrograde else 0),
-                          angle=angle, obliquity=obliquity)
+def se_orbit(semimajoraxis:float, eccentricity:float=None, obliquity:float=None, inclination:float=None,
+             ascending_node:float=None, arg_of_pericenter:float=None, angle:float=None, refplane:str='equator', retrograde:bool=False) -> [str]:
+    if eccentricity is not None:
+        yield '    Obliquity       {}'.format(obliquity)
+    yield '    Orbit'
+    yield '    {'
+    yield '        RefPlane        "{}"'.format(refplane)
+    yield '        SemiMajorAxis   {}'.format(semimajoraxis)
+    if eccentricity is not None:
+        yield '        Eccentricity    {}'.format(eccentricity)
+    if inclination is not None:
+        yield '        Inclination     {}'.format(inclination + (180 if retrograde else 0))
+    if angle is not None:
+        yield '        MeanAnomaly     {}'.format(angle)
+    if ascending_node is not None:
+        yield '        AscendingNode   {}'.format(ascending_node)
+    if arg_of_pericenter is not None:
+        yield '        ArgOfPericenter {}'.format(arg_of_pericenter)
+    yield '    }'

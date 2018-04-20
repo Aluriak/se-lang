@@ -196,7 +196,8 @@ but i had fun making the corresponding interpreters, and using them for some [us
 - [ ] injection of arbitrary SpaceEngine script code.
 - [x] full orbit definition
 - [ ] testing suite
-- [ ] handle star barycenter as object (bottom line: necessary to handle binary objects)
+- [x] handle star barycenter as object: binary systems are quite hard to make realistic
+- [ ] enables named parameters in orbit info in ASP
 
 
 

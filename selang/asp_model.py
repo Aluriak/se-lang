@@ -2,14 +2,13 @@
 
 import clyngor
 import itertools
-from .objects import (Model, Orbit, OBJECTS, RING_ARGS_ORDER, ORBIT_ARGS_ORDER,
-                      STAR_ARGS_ORDER, PLANET_ARGS_ORDER)
+from .objects import (Model, Orbit, OBJECTS, OBJECTS_NAME, RING_ARGS_ORDER, ORBIT_ARGS_ORDER,
+                      STAR_ARGS_ORDER, PLANET_ARGS_ORDER, BARY_ARGS_ORDER)
 from .objects_builder import (ref, ring as ring_builder, planet as planet_builder,
-                              star as star_builder)
+                              star as star_builder, barycenter as bary_builder)
 from .commons import asp_value_to_pyvalue
 
 
-OBJECTS_NAME = {'planet', 'star', 'ring'}
 
 # rebuild all with specific uids
 _gen_uid = itertools.count(1)
@@ -168,6 +167,10 @@ def _asp_tuple_to_object(atom:tuple) -> object:
         builder, args_order = star_builder, STAR_ARGS_ORDER
     elif atom[0] == 'ring':
         builder, args_order = ring_builder, RING_ARGS_ORDER
+    elif atom[0] == 'barycenter':
+        builder, args_order = bary_builder, BARY_ARGS_ORDER
+    elif atom[0] in OBJECTS_NAME:
+        raise ValueError("Non handled object {}".format(atom[0]))
     else:
         raise ValueError("Atom {} do not encode any known object".format(atom))
     data = dict(zip(args_order, map(asp_value_to_pyvalue, atom[1])))

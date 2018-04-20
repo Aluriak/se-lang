@@ -24,3 +24,6 @@ def of_object(obj:object, name:str, parent:str, *, content:[str]=()):
 def of_orbit(orbit:object):
     """SpaceEngine script representation of given Orbit."""
     return orbit.se_repr()
+
+def of_barycenter(barycenter:object):
+    return barycenter.se_repr()

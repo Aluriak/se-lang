@@ -2,7 +2,7 @@
 
 import inspect
 from itertools import islice, cycle
-from .objects import Planet, Orbit, Ring, Star, OBJECTS
+from .objects import Barycenter, Planet, Orbit, Ring, Star, OBJECTS
 
 
 orbit = Orbit
@@ -56,6 +56,9 @@ def planet(cls:str, earth_radius:float=None, earth_mass:float=None) -> Planet:
         *_astre_mass_radius(earth_mass, earth_radius),
     )
 
+def barycenter() -> Planet:
+    return Barycenter()
+
 
 def _astre_mass_radius(mass:float=None, radius:float=None) -> (float, float):
     if mass and radius is None:
@@ -85,6 +88,8 @@ def ref(name:str, **kwargs) -> star or planet:
         payload = planet, {'cls': 'luna', 'earth_mass': 0.1}
     elif name == 'black_hole':
         payload = star, {'spectral_class': 'X', 'solar_mass': 2000}
+    elif name == 'barycenter':
+        payload = barycenter, {}
     else:
         raise NotImplementedError("Non-implemented name: '{}'".format(name))
     func, fixed_kwargs = payload

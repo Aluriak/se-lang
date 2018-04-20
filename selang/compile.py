@@ -8,8 +8,7 @@ from pprint import pprint
 
 from . import serepr
 from . import commons
-from .commons import uid_gen
-from .objects import OBJECTS, Orbit, Ring
+from .objects import OBJECTS, Orbit, Ring, Barycenter
 from .objects_builder import ref
 
 
@@ -55,22 +54,25 @@ def compile_to_gen(system_name:str, orbits:dict, objects:dict) -> ([str], [str])
     objects -- map from object uid to object definition
 
     """
-    orbits = tuple(uniformized_orbits(orbits))
-    # print('ORBITS:', orbits)
-    orbits, objects, old_uids, uids = uidfy_data(orbits, objects)
-    # print('UIDFY:', orbits, objects, old_uids)
     name_of = lambda uid: system_name + '_' + str(type(objects[uid]).__name__).lower() + '_' + str(uid)
 
     # get root
-    roots, inc_tree = make_inclusion_tree(orbits, uids)  # root uid -> {child_uid: {subchild uid: ...}}
+    roots, inc_tree = make_inclusion_tree(orbits)  # root uid -> {child_uid: {subchild uid: ...}}
     if len(roots) != 1:
         raise ValueError("Invalid number of roots. The {} roots are: {}".format(len(roots), ', '.join(map(str, roots))))
     root = next(iter(roots))
     del roots
 
+    # special case: root is a barycenter. As such, the star line must contains
+    #  it instead of the standard system name only.
+    if isinstance(objects[root], Barycenter):
+        star_lines = serepr.of_star_record(name_of(root))
+        planet_lines = ()
+    else:  # regular case: register the root as child of the star record
+        star_lines = serepr.of_star_record(system_name)
+        planet_lines = serepr.of_root(objects[root], name_of(root), system_name)
+
     # compute se-repr of root
-    star_lines = serepr.of_star_record(system_name)
-    planet_lines = serepr.of_root(objects[root], name_of(root), system_name)
     # compute se-repr of each object
     for parent, child, orbit in orbits:
         lines = serepr.of_object(objects[child], name_of(child), name_of(parent),
@@ -79,7 +81,7 @@ def compile_to_gen(system_name:str, orbits:dict, objects:dict) -> ([str], [str])
     return star_lines, planet_lines
 
 
-def make_inclusion_tree(orbits, uids) -> (set, dict):
+def make_inclusion_tree(orbits) -> (set, dict):
     direct_inclusions = {}  # parent -> child
     for parent, child, orbit in orbits:
         direct_inclusions.setdefault(parent, set()).add(child)
@@ -120,6 +122,8 @@ def uidfy_data(orbits, objects) -> (dict, dict, dict, dict):
 
 
     """
+    _uid_gen = itertools.count(1)
+    uid_gen = lambda: next(_uid_gen)
     new_orbits = []
     new_objects = {}
     old_to_new_uids = {}
