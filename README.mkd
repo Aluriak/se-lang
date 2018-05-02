@@ -212,5 +212,6 @@ No.
 ### Contributions ?
 Yes.
 
-### Other things i did for SpaceEngine ?
-[se-pioneer](https://github.com/Aluriak/se-pioneers), for asynchonous multiplayer.
+### Other things i did for/with SpaceEngine ?
+- [se-pioneer](https://github.com/Aluriak/se-pioneers), for asynchonous multiplayer.
+- [An Ultimate Engineered Solar System visualization](https://lucas.bourneuf.net/blog/uess.html).
