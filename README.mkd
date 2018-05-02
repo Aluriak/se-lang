@@ -1,7 +1,7 @@
 # Space Engine modding language abstraction
 Using python, define complete systems in SpaceEngine.
 
-For motivations, see [my blog entry about this repository](lucas.bourneuf.net/blog/se-lang.html).
+For motivations, see [my blog entry about this repository](https://lucas.bourneuf.net/blog/se-lang.html).
 
 
 ## Short example
