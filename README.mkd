@@ -24,7 +24,7 @@ You can now run SpaceEngine and press F3 to search and go to `MySimpleSystem`.
 
     pip install selang
 
-On random error, add `no-cache-dir`.
+On random error, add `--no-cache-dir`.
 To get the ASP part working, install [clingo 5](https://github.com/potassco/clingo/releases) in you $PATH.
 
 
