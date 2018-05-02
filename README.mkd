@@ -181,8 +181,8 @@ but i had fun making the corresponding interpreters, and using them for some [us
 ## dev
 - [x] ASP input: short and simple.
 - [x] JSON input: not programmable, but useful for simple work.
-- [ ] simplify a little JSON input as it was done for ASP (notably gestion of meta-objects delegated to post-processing compilation)
-- [x] Python input: good enough
+- [ ] simplify a little JSON input as it was done for ASP (notably management of meta-objects delegated to post-processing compilation)
+- [x] Python input: good enough, since it's the model itself :)
 - [ ] lisp input.
 - [x] read input from file
 - [x] reproduce Kalgash systems from [planetplanet.net](https://planetplanet.net/2018/03/21/asimov-kalgash-take2/): [see blog entry](https://lucas.bourneuf.net/blog/se-lang.html)
@@ -192,6 +192,9 @@ but i had fun making the corresponding interpreters, and using them for some [us
 - [x] specific treatment for elements of rings
 - [x] allow use of standard name for objects: `sun`, `earth`,…
 - [x] allow use of non-standard name for objects: `planet` and `star` functions.
+- [ ] plugins
+    - [ ] extentable definitions of objects and their (default) parameters
+    - [ ] use plugins to implement basic objects
 - [ ] import and execution of `.py` files
 - [ ] injection of arbitrary SpaceEngine script code.
 - [x] full orbit definition
