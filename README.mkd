@@ -21,11 +21,12 @@ You can now run SpaceEngine and press F3 to search and go to `MySimpleSystem`.
 
 
 ## Install
+If you do not have python 3, you will have [to install it first](http://docs.python-guide.org/en/latest/starting/installation/). Install *se-lang* as any python 3 package:
 
     pip install selang
 
-On random error, add `--no-cache-dir`.
-To get the ASP part working, install [clingo 5](https://github.com/potassco/clingo/releases) in you $PATH.
+On random error, use `pip3` or `python -m pip` or `python3 -m pip` instead of just `pip`. Or add `--no-cache-dir` at the end.
+To get the ASP part working, install [clingo 5](https://github.com/potassco/clingo/releases) in your $PATH.
 
 
 
